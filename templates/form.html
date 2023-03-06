@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&display=swap" rel="stylesheet">
+<script src="{{url_for('static',filename='/js/jquery-1.10.2.min.js')}}"></script>
+    <script>	
+	function disappear_div(id,i)
+			{
+				//Validating the data of current div
+				
+				cgpa = document.getElementById("Sem_CGPA_"+i);
+				percent = document.getElementById("Sem_Percent_"+i);
+				attendance = document.getElementById("Attendance_"+i);
+				Events_yes = document.getElementById("Events_yes_"+i);
+				Events_no = document.getElementById("Events_no_"+i);
+				
+				if(cgpa.value <= parseInt(0) || percent.value <= parseInt(0) || cgpa.value > parseInt(10) || percent.value > parseInt(100) || isNaN(cgpa.value)){
+					alert("Please enter relevant CGPA!!\nCGPA must be between 1 and 10");
+					cgpa.focus();
+				}
+				
+				else if(attendance.value <= parseInt(0) || attendance.value > parseInt(100) || isNaN(attendance.value)){
+					alert("Please enter relavent data for attendance field!!! \n  (Only values between 0 and 100 are accepted)")
+				}
+
+				else if(Events_yes.checked == false && Events_no.checked== false){
+					alert("The Events field must not be empty!!!");
+					Events_yes.focus();
+				}
+				else{
+				var next_i = parseInt(i) + parseInt(1);
+				//alert("The next i is : "+ next_i);
+				document.getElementById(id).style.display="none";
+				scrollToNextDiv('sem'+next_i); 
+				}
+			}
+	function dynamicDiv(){
+			if((document.getElementById("current_sem").value > parseInt(1)) && isNaN(document.getElementById("current_sem").value)==false)
+			{
+			 var userInput = parseInt(document.getElementsByName('current_sem')[0].value);
+			
+			 for(var i=1;i<userInput;i++)
+			 {
+				document.getElementById("personal_info").style.display = "none";
+				form_field = "<fieldset><legend>Sem "+i+"</legend>";
+				
+				test = document.createElement("input");
+				test.setAttribute("id","Sem_Percent"+i);
+				
+				br = "<br>";
+				
+				parentDiv = document.getElementById("demo");
+				childDiv = document.createElement("div");
+				childDiv.setAttribute("id","sem"+i);
+				childDiv.setAttribute("class","login-box");
+				parentDiv.appendChild(childDiv); //code upto this creates individual divs for each sem
+				
+				sem_div = document.getElementById("sem"+i); //code from here creates individual input elements into each div created above
+				fieldset = document.createElement("fieldset");
+				fieldset.setAttribute("id","fieldset_for_sem_"+i);
+				sem_div.appendChild(fieldset);
+				
+				fieldset_div = document.getElementById("fieldset_for_sem_"+i);
+				fieldset_div.insertAdjacentHTML("beforeend","<legend>Academic Record for Sem "+i+"</legend>");
+				fieldset_div.insertAdjacentHTML('beforeend',"Semester Final CGPA : <br>");
+				field0 = document.createElement("input");
+				field0.setAttribute("type","text");
+				field0.setAttribute("id","Sem_CGPA_"+i);
+				field0.setAttribute("class","input");
+				field0.setAttribute("Name","Sem_CGPA_"+i);
+				field0.setAttribute("onkeyup","CgpaToPercent()");
+				fieldset_div.appendChild(field0);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+
+				fieldset_div.insertAdjacentHTML('beforeend',"<h3><font color='white'> OR </font></h3>");
+				
+				fieldset_div.insertAdjacentHTML('beforeend',"Semester Final Grade (in %) : <br>");
+				field1 = document.createElement("input");
+				field1.setAttribute("type","text");
+				field1.setAttribute("id","Sem_Percent_"+i);
+				field1.setAttribute("class","input");
+				field1.setAttribute("Name","Sem_Percent_"+i);
+				fieldset_div.appendChild(field1);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				
+				fieldset_div.insertAdjacentHTML('beforeend',"Final attendance of the Semester (in %) : ");
+				field2 = document.createElement("input");
+				field2.setAttribute("type","text");
+				field2.setAttribute("id","Attendance_"+i);
+				field2.setAttribute("Name","Attendance_"+i);
+				field2.setAttribute("class","input");
+				fieldset_div.appendChild(field2);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				
+				fieldset_div.insertAdjacentHTML('beforeend',"Did you participate in any of the co-curricular or Non-curricular activities or Events?? : ");
+				field3 = document.createElement("input");
+				field3.setAttribute("type","radio"); //Buttn 1
+				field3.setAttribute("id","Events_yes_"+i);
+				field3.setAttribute("Name","Events_"+i);
+				field3.setAttribute("value",-1);
+				fieldset_div.appendChild(field3);
+				fieldset_div.insertAdjacentHTML("beforeend"," Yes ");
+				fieldset_div.insertAdjacentHTML("beforeend","&nbsp;&nbsp;&nbsp;&nbsp;");
+				
+				
+				field3 = document.createElement("input");
+				field3.setAttribute("type","radio"); //Buttn 2
+				field3.setAttribute("id","Events_no_"+i);
+				field3.setAttribute("Name","Events_"+i);
+				field3.setAttribute("value",1);
+				fieldset_div.appendChild(field3);
+				fieldset_div.insertAdjacentHTML("beforeend"," No ");
+				
+
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				fieldset_div.insertAdjacentHTML('beforeend',br);
+				proceed_button = "<button id='Proceed_btn' type='button' onClick=disappear_div('sem"+i+"',"+i+") class='proceed_button'> Proceed!! </button>";
+				fieldset_div.insertAdjacentHTML('beforeend',proceed_button);
+				sem_div_br = "<br id='sem_div_br_"+i+"'>";
+				fieldset_div.insertAdjacentHTML('afterend',sem_div_br);				
+				
+				sem_div.insertAdjacentHTML('afterend',sem_div_br);
+				sem_div.insertAdjacentHTML('afterend',sem_div_br);
+
+				document.getElementById("sem"+i).style.display = "none";
+				
+				
+			 }
+			 document.getElementById('sem1').style.display = "block";
+			 scrollToDiv();
+			} 
+			else{
+				alert("Please Enter appropriate value for current semester!!! \n                 (Only values > 1 are accepted)");
+				document.getElementById("current_sem").focus();
+			}
+	}
+
+    function scrollToDiv() {
+            $('html, body').animate({ scrollTop: $('#demo').offset().top }, 'slow');
+            return false;
+        }
+
+	function scrollToNextDiv(next_id) {
+			var element = document.getElementById(next_id);
+			if(element){
+			document.getElementById(next_id).style.display = "block";
+            $('html, body').animate({ scrollTop: $('#'+next_id).offset().top }, 'slow');
+			}
+			else{
+				document.getElementById("misc_info").style.display = "block";
+				$('html, body').animate({ scrollTop: $('#misc_info').offset().top }, 'slow');
+			}
+            return false;
+        }
+	
+	function CgpaToPercent() {
+  			var x1 = parseFloat(document.getElementById("Sem_CGPA_1").value);
+  			var percentage1 = document.getElementById("Sem_Percent_1");
+  			var temp1 = (x1 - parseFloat(0.5)) * parseInt(10);
+			percentage1.value = parseInt(temp1);
+			if(percentage1.value == 'NaN')
+			{
+				percentage1.value='';
+			}  
+			
+			var x2 = parseFloat(document.getElementById("Sem_CGPA_2").value);
+  			var percentage2 = document.getElementById("Sem_Percent_2");
+  			var temp2 = (x2 - parseFloat(0.5)) * parseInt(10);
+			percentage2.value = parseInt(temp2);
+			if(percentage2.value == 'NaN')
+			{
+				percentage2.value='';
+			}   
+			
+			var x3 = parseFloat(document.getElementById("Sem_CGPA_3").value);
+  			var percentage3 = document.getElementById("Sem_Percent_3");
+  			var temp3 = (x3 - parseFloat(0.5)) * parseInt(10);
+			percentage3.value = parseInt(temp3);
+			if(percentage3.value == 'NaN')
+			{
+				percentage3.value='';
+			}   
+			
+			var x4 = parseFloat(document.getElementById("Sem_CGPA_4").value);
+  			var percentage4 = document.getElementById("Sem_Percent_4");
+  			var temp4 = (x4 - parseFloat(0.5)) * parseInt(10);
+			percentage4.value = parseInt(temp4);
+			if(percentage4.value == 'NaN')
+			{
+				percentage4.value='';
+			}   
+			
+			var x5 = parseFloat(document.getElementById("Sem_CGPA_5").value);
+  			var percentage5 = document.getElementById("Sem_Percent_5");
+  			var temp5 = (x5 - parseFloat(0.5)) * parseInt(10);
+			percentage5.value = parseInt(temp5);
+			if(percentage5.value == 'NaN')
+			{
+				percentage5.value='';
+			}   
+			
+			var x6 = parseFloat(document.getElementById("Sem_CGPA_6").value);
+  			var percentage6 = document.getElementById("Sem_Percent_6");
+  			var temp6 = (x6 - parseFloat(0.5)) * parseInt(10);
+			percentage6.value = parseInt(temp6);
+			if(percentage6.value == 'NaN')
+			{
+				percentage6.value='';
+			}   
+			
+			var x7 = parseFloat(document.getElementById("Sem_CGPA_7").value);
+  			var percentage7 = document.getElementById("Sem_Percent_7");
+  			var temp7 = (x7 - parseFloat(0.5)) * parseInt(10);
+			percentage7.value = parseInt(temp7);
+			if(percentage8.value == 'NaN')
+			{
+				percentage8.value='';
+			}   
+
+		}
+
+    </script>
+	
+	<style>
+	.login-box {
+		position: relative;
+		width: 500px;
+		padding: 40px;
+		box-sizing: border-box;
+		box-shadow: 0 15px 25px rgba(0,0,0,.6);
+		border-radius: 10px;
+		font-family: sans-serif;
+		color : #fff;
+		background: rgb(174, 59, 98);
+	}
+
+	.misc-info-box {
+		position: relative;
+		width: 500px;
+		padding: 40px;
+		box-sizing: border-box;
+		box-shadow: 0 15px 25px rgba(0,0,0,.6);
+		border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+		font-family: sans-serif;
+		color : #fff;
+		background: rgb(174, 59, 98);
+	}
+	
+	.input{
+		width: 100%;
+		padding: 10px 0;
+		font-size: 16px;
+		color: #fff;
+		border: none;
+		border-bottom: 1px solid #fff;
+		outline: none;
+		background: transparent;
+	}
+#main_div{
+	background-size: cover;
+	border-bottom: 20px solid #EEE2DC;
+	border-top: 20px solid #EEE2DC;
+	border-right: 20px solid #EEE2DC;
+	border-left: 20px solid #EEE2DC;
+}
+
+#logo{
+	font-family: 'Just Another Hand', cursive;
+	color :rgb(174, 59, 98);
+	font-size: 100px;
+	font-style: italic;
+	letter-spacing: 3px;
+}
+/*Predict Now Button*/
+.button {
+  --offset: 10px;
+  --border-size: 2px;
+  display: block;
+  position: relative;
+  padding: 1.5em 3em;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: 0;
+  background: transparent;
+  color: #e55743;
+  text-transform: uppercase;
+  letter-spacing: .25em;
+  outline: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 var(--border-size) currentcolor;
+  -webkit-transition: background .8s ease;
+  transition: background .8s ease;
+}
+.button:hover {
+  background: rgba(100, 0, 0, 0.03);
+  color:white;
+}
+.button__horizontal, .button__vertical {
+  position: absolute;
+  top: var(--horizontal-offset, 0);
+  right: var(--vertical-offset, 0);
+  bottom: var(--horizontal-offset, 0);
+  left: var(--vertical-offset, 0);
+  -webkit-transition: -webkit-transform .8s ease;
+  transition: -webkit-transform .8s ease;
+  transition: transform .8s ease;
+  transition: transform .8s ease, -webkit-transform .8s ease;
+  will-change: transform;
+}
+.button__horizontal::before, .button__vertical::before {
+  content: '';
+  position: absolute;
+  border: inherit;
+}
+.button__horizontal {
+  --vertical-offset: calc(var(--offset) * -1);
+  border-top: var(--border-size) solid currentcolor;
+  border-bottom: var(--border-size) solid currentcolor;
+}
+.button__horizontal::before {
+  top: calc(var(--vertical-offset) - var(--border-size));
+  bottom: calc(var(--vertical-offset) - var(--border-size));
+  left: calc(var(--vertical-offset) * -1);
+  right: calc(var(--vertical-offset) * -1);
+}
+.button:hover .button__horizontal {
+  -webkit-transform: scaleX(0);
+          transform: scaleX(0);
+}
+.button__vertical {
+  --horizontal-offset: calc(var(--offset) * -1);
+  border-left: var(--border-size) solid currentcolor;
+  border-right: var(--border-size) solid currentcolor;
+}
+.button__vertical::before {
+  top: calc(var(--horizontal-offset) * -1);
+  bottom: calc(var(--horizontal-offset) * -1);
+  left: calc(var(--horizontal-offset) - var(--border-size));
+  right: calc(var(--horizontal-offset) - var(--border-size));
+}
+.button:hover .button__vertical {
+  -webkit-transform: scaleY(0);
+          transform: scaleY(0);
+
+}
+/*Proceed Button*/
+
+.proceed_button {
+  padding: 20px 40px;
+  background: none;
+  border: none;
+  position: relative;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 3px;
+  cursor: pointer;
+}
+.proceed_button:after, .proceed_button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: 2px solid #fff;
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+}
+.proceed_button:after {
+  -webkit-transform: translate(3px, 3px);
+          transform: translate(3px, 3px);
+}
+.proceed_button:before {
+  -webkit-transform: translate(-3px, -3px);
+          transform: translate(-3px, -3px);
+}
+.proceed_button:hover:after, .proceed_button:hover:before {
+  -webkit-transform: translate(0);
+          transform: translate(0);
+	border-color: black;
+}
+.proceed_button:hover{
+	color : white;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block body %}
+<center>
+<div id="main_div" style="background-image: url({{url_for('static',filename='images/edited_bg.jpg')}});">
+<br><br>
+ <h1 id="logo"><font color="white">|</font><span style="padding-bottom:10px; border-bottom:3px solid white; padding-top: 10px; border-top: 3px solid white;"> Grade Predictor!!! </span><font color="white">|</font></h1><br><br>
+<form action="/tool" method="post" name="form2" onsubmit="return techskills()">
+	<div class="misc-info-box" id="personal_info">
+    Name : <input type="text" id="name" name="name" class="input">
+	<br><br>
+    Enter what semester are you currently stuyding in : 
+    <input type="text" id="current_sem" name="current_sem" class="input" style="width : 30px"/> &nbsp;&nbsp;&nbsp;<br><br><br>
+    <button type="button" name="btnInput" onclick="dynamicDiv()" class="proceed_button">Proceed</button>
+	<br><br>
+	</div>
+	<br><br>
+	<center>
+    <div id="demo"></div>
+    
+    <div id="misc_info" style="display : none;" class="misc-info-box">
+		Technical skills : <input type="radio" id="tech_skills_yes" name="tech_skills" value=1> Yes 
+		&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" id="tech_skills_no" name="tech_skills" value=-1> No
+		<br><br>
+		Total Backlog/s : <input type="text" id="backlogs" name="backlogs" required><br><br>
+		
+		<button class="button">
+			<font color="white">Predict Now!!</font>
+			<div class="button__horizontal"></div>
+			<div class="button__vertical"></div>
+		</button>
+	</div>
+</center>
+<br><br>
+</form>
+</div>
+<script>
+	function techskills()
+	{
+		yes = document.getElementById("tech_skills_yes");
+		no = document.getElementById("tech_skills_no");
+
+		if(yes.checked == false && no.checked == false){
+			alert("Technical skills must not be empty!!!");
+			yes.focus();
+			return false;
+		}
+	}
+
+	$(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#main_div').offset().top
+    }, 'slow');
+});
+</script>
+{% endblock %}

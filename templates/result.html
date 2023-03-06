@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+
+.table_cell th h1 {
+	  font-weight: bold;
+	  font-size: 1em;
+  text-align: left;
+  color: #185875;
+}
+
+.table_cell td {
+	  font-weight: normal;
+	  font-size: 1em;
+  -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+	   -moz-box-shadow: 0 2px 2px -2px #0E1119;
+	        box-shadow: 0 2px 2px -2px #0E1119;
+}
+
+.table_cell {
+    overflow: hidden;
+    width: 80%;
+	margin: 0 auto;
+  display: table;
+  padding: 0 0 8em 0;
+  color:#A7A1AE;
+  text-align: center;
+  font-size:16px;
+}
+
+.table_cell td, .table_cell th {
+	  padding-bottom: 2%;
+	  padding-top: 2%;
+  padding-left:2%;  
+}
+
+/* Background-color of the odd rows */
+.table_cell tr:nth-child(odd) {
+	  background-color: #323C50;
+}
+
+/* Background-color of the even rows */
+.table_cell tr:nth-child(even) {
+	  background-color: #2C3446;
+}
+
+.table_cell th {
+	  background-color: #1F2739;
+}
+
+.table_cell td:first-child { color: #FB667A; }
+
+.table_cell tr:hover {
+   background-color: #464A52;
+-webkit-box-shadow: 0 6px 6px -6px #0E1119;
+	   -moz-box-shadow: 0 6px 6px -6px #0E1119;
+	        box-shadow: 0 6px 6px -6px #0E1119;
+}
+
+.table_cell td:hover {
+  background-color: rgb(11, 117, 255);
+  color: white;
+  font-weight: bold;
+  
+  box-shadow: blue -1px 1px, blue -2px 2px, blue -3px 3px, blue -4px 4px, blue -5px 5px, blue -6px 6px;
+  transform: translate3d(6px, -6px, 0);
+  
+  transition-delay: 0s;
+	  transition-duration: 0.4s;
+	  transition-property: all;
+  transition-timing-function: line;
+}
+
+@media (max-width: 800px) {
+.table_cell td:nth-child(4),
+.table_cell th:nth-child(4) { display: none; }
+}
+
+.neon {
+  color: #fff;
+  text-shadow:
+    0 0 5px #4DC3FA,
+    0 0 10px #4DC3FA,
+    0 0 20px #4DC3FA;
+    font-size: 50px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.fadeIn{
+    animation: fadeIn ease 4s;
+    -webkit-animation: fadeIn ease 4s;
+    -moz-animation: fadeIn ease 4s;
+    -o-animation: fadeIn ease 4s;
+    -ms-animation: fadeIn ease 4s;
+}
+
+@keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+0% {opacity:0;}
+100% {opacity:1;}
+}
+
+#main_div{
+    background-size: cover;
+}
+
+.overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.9);
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  position: relative;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.overlay a:hover, .overlay a:focus {
+  color: #f1f1f1;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+  font-size: 40px;
+  top: 15px;
+  right: 35px;
+  }
+}
+
+.overlay_td:empty::after{
+  content: "\00a0";
+}
+
+#data_visualiation td{
+    text-align: center; 
+    vertical-align: middle;
+}
+</style>
+<script src="{{url_for('static',filename='/js/jquery-1.10.2.min.js')}}"></script>
+<script>
+    $(document).ready(function () {
+    // Handler for .ready() called.
+    $('html, body').animate({
+        scrollTop: $('#predictor_loader').offset().top
+    }, 'slow');
+});
+
+$(document).ready(function(){
+   setTimeout(function(){
+      ScrollToDiv();
+   },4500);
+});
+
+function ScrollToDiv() {
+            $('html, body').animate({ scrollTop: $('#Data_table').offset().top }, 'slow');
+            return false;
+        }
+
+function openNav() {
+  document.getElementById("myNav").style.width = "100%";
+}
+
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="main_div" style="background-image: url({{url_for('static',filename='images/edited_bg.jpg')}});">
+<center>
+<br><br><br><br>
+<table class="table_cell" border="2" id="Data_table">  
+<tr>
+    <th colspan="2" class="neon">Detailed&nbsp; &nbsp;Data&nbsp; &nbsp;Analysis</th>
+</tr>
+{% for item in data %}
+<tr>   
+   <td> {{ item }}</td>
+   {% if data[item] is iterable and data[item] is not string %}
+   <td>
+    <center>
+   <table style="text-align: center;" cellpadding="10px" cellspacing="30px">
+    <tr> 
+    <td>Attendance</td> 
+    <td style="color : #FB667A;">Events</td>
+    <td style="color : #FB667A;" width="100px">Final Grade</td>
+    </tr>
+    <tr>
+    {% for i in data[item] %}
+    {% if i==1 %}
+    <td style="color:#A7A1AE;">No</td>
+    {% elif i==-1 %}
+    <td style="color:#A7A1AE;">Yes</td>
+    {% else %}
+   <td style="color:#A7A1AE;">{{ i }}</td>
+   {% endif %}
+   {% endfor %}
+    </td>
+    </tr>
+    </table>
+    </center>
+    {% else %}
+    <td>{{ data[item] }}</td>
+    {% endif %}
+</tr>
+{% endfor %}
+<tr id="predictor_loader">
+    <td>Predicted Score</td>
+    <td>
+        <div id="circle1"></div>
+        <div id="shadowring"></div>
+        <div id="circle2"></div>
+        <canvas height="200" width="200" id="counter"></canvas><br>
+        <div class="fadeIn" style="font-size:20px">{{CGPA ~ " CGPA"}}</div>
+    </td>
+</tr>
+</table>
+<br><br>
+<div id="myNav" class="overlay">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="overlay-content">
+    <center>
+    <table id="data_visualization">
+        <tr>
+        <td><img src='{{ Grade_bar_graph }}' alt="Chart" height="500" width="520"></td>
+        <td><font size="13" color="white">Grade devaition in individual semesters</font></td>
+        </tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr><td class="overlay_td"></td></tr>
+        <tr>
+        <td><font size="13" color="white">Attendance according to corresponding semesters</font></td>
+        <td><img src='{{ Attendance_bar_graph }}' alt="Chart" height="500" width="520"></td>
+    </table>
+    </center>
+    </div>
+  </div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; View Detailed Stats</span>
+</center>
+<br><br><br><br>
+</div>
+<script type="application/javascript">
+    var counter = document.getElementById('counter').getContext('2d');
+    var no = 0; // Starting Point
+    var pointToFill = 4.72;  //Point from where you want to fill the circle
+    var cw = counter.canvas.width;  //Return canvas width
+    var ch = counter.canvas.height; //Return canvas height
+    var diff;   // find the different between current value (no) and trageted value (100)
+    var final_grade = '{{final_grade}}';
+    function fillCounter(){
+        diff = ((no/100) * Math.PI*2*10);
+        
+        counter.clearRect(0,0,cw,ch);   // Clear canvas every time when function is call
+        
+        counter.lineWidth = 15;     // size of stroke
+        
+        counter.fillStyle = '#fff';     // color that you want to fill in counter/circle
+        
+        counter.strokeStyle = '#FB667A';    // Stroke Color
+        
+        counter.textAlign = 'center';
+        
+        counter.font = "25px monospace";    //set font size and face
+        
+        counter.fillText(no+'%',100,110);       //fillText(text,x,y);
+        
+        counter.beginPath();
+        counter.arc(100,100,90,pointToFill,diff/10+pointToFill);    //arc(x,y,radius,start,stop)
+        
+        counter.stroke();   // to fill stroke
+        
+        // now add condition
+        
+        if(no >= final_grade)
+        {
+            clearTimeout(fill);     //fill is a variable that call the function fillcounter()
+        }
+        no++;
+    }
+    //now call the function
+    
+    var fill = setInterval(fillCounter,50);     //call the fillCounter function after every 50MS
+
+</script>
+{% endblock %}
