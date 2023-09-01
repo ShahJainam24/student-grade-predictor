@@ -24,9 +24,23 @@ The project requires a few mandatory libraries for running and setting up a prop
 
 > pip install -r requirements.txt
 
+## Architecture 
+
+![image](https://github.com/ShahJainam24/student-grade-predictor/assets/49012105/a9160817-a98e-4f34-9d97-61d19e183e93)
+
 ## Built With
 
 Web Framework used : Python Flask
+
+## Results
+![Tool_mainpage](https://github.com/ShahJainam24/student-grade-predictor/assets/49012105/3754a32a-99bd-4250-a715-137a83620a2a)
+
+![Form_input](https://github.com/ShahJainam24/student-grade-predictor/assets/49012105/dda57d92-d3d9-49ef-a539-130e587f23de)
+![tech_skills](https://github.com/ShahJainam24/student-grade-predictor/assets/49012105/18b60596-62f9-40cd-a4bf-31546c7132f2)
+
+![Data_able](https://github.com/ShahJainam24/student-grade-predictor/assets/49012105/3ce5eea8-5120-4ccb-825d-faf0055d301d)
+
+
 
 ## Acknowledgements
 
