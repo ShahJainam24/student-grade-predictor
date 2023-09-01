@@ -45,6 +45,6 @@ Web Framework used : Python Flask
 ## Acknowledgements
 
  - [Technical  Hub](https://technicalhub.io/blog/student-grade-prediction/)
- - [Stack Overflow] (https://stackoverflow.com/)
- - [YouTube] (https://www.youtube.com/)
- - [Regression] (https://en.wikipedia.org/wiki/Linear_regression)
+ - [Stack Overflow](https://stackoverflow.com/)
+ - [YouTube](https://www.youtube.com/)
+ - [Regression](https://en.wikipedia.org/wiki/Linear_regression)
